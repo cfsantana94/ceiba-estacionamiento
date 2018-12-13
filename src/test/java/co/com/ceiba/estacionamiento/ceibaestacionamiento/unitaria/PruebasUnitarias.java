@@ -2,6 +2,7 @@ package co.com.ceiba.estacionamiento.ceibaestacionamiento.unitaria;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 
@@ -9,24 +10,36 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.Vehiculo;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.constantes.Constantes;
+import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.ValidarDisponibilidad;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.ValidarPlaca;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.ValidarTipoVehiculo;
-
+import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoImpl;
+import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoRepositorio;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.utilidad.TestDataBuilder;
 
 @SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class PruebasUnitarias {
+	
+	@InjectMocks
+	ParqueaderoImpl parqueaderoImpl;
+	
+	@Mock
+	ParqueaderoRepositorio parqueaderoRepositorio;
 
 	@InjectMocks
 	ValidarTipoVehiculo validarTipoVehiculo;
 
 	@InjectMocks
 	ValidarPlaca validarPlaca;
+	
+	@InjectMocks
+	ValidarDisponibilidad validarDisponibilidad;
 
 	@Test
 	public void validarTipoVehiculoCarroTest() {
@@ -94,6 +107,19 @@ public class PruebasUnitarias {
 			validarPlaca.ejecutar(vehiculo);
 		} catch (Exception e) {
 			assertNotEquals(Constantes.MENSAJE_RESTRICCION_DIAS_DOMINGO_LUNES, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void validarDisponibilidadCarroTest() {
+		Vehiculo vehiculo = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).build();
+
+		when(parqueaderoRepositorio.countByTipoVehiculoAndEstado(vehiculo.getTipoVehiculo(), Constantes.ESTADO_ACTIVO)).thenReturn((long) Constantes.CAPACIDAD_CARRO);
+		
+		try {
+			validarDisponibilidad.ejecutar(vehiculo);
+		} catch (Exception e) {
+			assertEquals(Constantes.MENSAJE_CUPO_CARRO_LLENO, e.getMessage());
 		}
 	}
 
