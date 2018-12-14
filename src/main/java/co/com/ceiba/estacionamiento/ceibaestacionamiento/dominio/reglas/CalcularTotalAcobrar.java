@@ -15,7 +15,7 @@ public class CalcularTotalAcobrar implements IReglas {
 		vehiculo.setValorACobrar(totalAPagar);
 	}
 
-	private double calculartotal(Vehiculo vehiculo) {
+	public double calculartotal(Vehiculo vehiculo) {
 		int[] tiempo = calcularTiempo(vehiculo.getFechaEntrada(), vehiculo.getFechaSalida());
 		double valorACobrar = 0;
 		if (vehiculo.getTipoVehiculo().equals(Constantes.TIPO_VEHICULO_CARRO)) {
@@ -34,23 +34,26 @@ public class CalcularTotalAcobrar implements IReglas {
 
 	}
 
-	private int[] calcularTiempo(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
-		long tiempototalhoras = Duration.between(fechaEntrada, fechaSalida).toHours();
+	public int[] calcularTiempo(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+		double tiempohoras =0;
+		double tiempominutos = Duration.between(fechaEntrada, fechaSalida).toMinutes();
+		
+		tiempohoras = Math.ceil(tiempominutos/60);
+		
+		if (tiempohoras == 0)
+			tiempohoras++;
 
-		if (tiempototalhoras == 0)
-			tiempototalhoras++;
-
-		double dias = (tiempototalhoras / Constantes.LIMITE_MAX_HORAS_DIA);
+		double dias = (tiempohoras / Constantes.LIMITE_MAX_HORAS_DIA);
 
 		int totalDias = (int) dias;
 
-		int totalHorasRestantes = (int) ((dias - totalDias) * Constantes.LIMITE_MAX_HORAS_DIA);
+		int totalHoras = (int) Math.ceil ((dias - totalDias) * Constantes.LIMITE_MAX_HORAS_DIA);
 
-		if (totalHorasRestantes >= Constantes.LIMITE_MIN_HORAS_DIA) {
+		if (totalHoras >= Constantes.LIMITE_MIN_HORAS_DIA ) {
 			totalDias++;
-			totalHorasRestantes = 0;
+			totalHoras = 0;
 		}
-		int[] tiempo = { totalDias, totalHorasRestantes };
+		int[] tiempo = { totalDias, totalHoras };
 		return tiempo;
 	}
 

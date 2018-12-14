@@ -24,20 +24,21 @@ public class TestDataBuilder {
 		this.fechaEntrada = LocalDateTime.now();
 		this.fechaSalida = null;
 	}
-	
-	public TestDataBuilder (String tipoVehiculo) {
+
+	public TestDataBuilder(String tipoVehiculo) {
 		this.placa = Constantes.PLACA_VEHICULO_CARRO;
 		this.fechaEntrada = LocalDateTime.now();
 		this.tipoVehiculo = tipoVehiculo;
-	
+
 	}
-	
+
 	public Vehiculo build() {
 		if (this.tipoVehiculo.equals(Constantes.TIPO_VEHICULO_CARRO)) {
-			return new Carro(this.placa,this.fechaEntrada,this.fechaSalida,this.valorACobrar,this.tipoVehiculo);
+			return new Carro(this.placa, this.fechaEntrada, this.fechaSalida, this.valorACobrar, this.tipoVehiculo);
 		}
 		if (this.tipoVehiculo.equals(Constantes.TIPO_VEHICULO_MOTO)) {
-			return new Moto (this.placa,this.fechaEntrada,this.fechaSalida,this.valorACobrar,this.tipoVehiculo, this.cilindraje);
+			return new Moto(this.placa, this.fechaEntrada, this.fechaSalida, this.valorACobrar, this.tipoVehiculo,
+					this.cilindraje);
 		}
 		return new Vehiculo(this.placa, this.fechaEntrada, this.fechaSalida, this.valorACobrar, this.tipoVehiculo);
 	}
@@ -63,8 +64,9 @@ public class TestDataBuilder {
 		return cilindraje;
 	}
 
-	public void setCilindraje(double cilindraje) {
+	public TestDataBuilder setCilindraje(double cilindraje) {
 		this.cilindraje = cilindraje;
+		return this;
 	}
 
 	public double getValorACobrar() {
@@ -88,8 +90,9 @@ public class TestDataBuilder {
 		return fechaSalida;
 	}
 
-	public void setFechaSalida(LocalDateTime fechaSalida) {
+	public TestDataBuilder setFechaSalida(LocalDateTime fechaSalida) {
 		this.fechaSalida = fechaSalida;
+		return this;
 	}
 
 }
