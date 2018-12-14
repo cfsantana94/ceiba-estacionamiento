@@ -86,7 +86,7 @@ public class PruebasUnitarias {
 	}
 
 	@Test
-	public void validarPlacaConRestriccionTest() {
+	public void validarPlacaConRestriccionLunesTest() {
 		TestDataBuilder testDataBuilder = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO);
 		Vehiculo vehiculo = testDataBuilder.setPlaca(Constantes.PLACA_VEHICULO_CARRO_INICIO_CON_RESTRI)
 				.setFechaEntrada(LocalDateTime.parse("2018-12-10T07:00:00")).build();
@@ -97,7 +97,35 @@ public class PruebasUnitarias {
 			assertEquals(Constantes.MENSAJE_RESTRICCION_DIAS_DOMINGO_LUNES, e.getMessage());
 		}
 	}
+	
+	@Test
+	public void validarPlacaConRestriccionDomingoTest() {
+		TestDataBuilder testDataBuilder = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO);
+		Vehiculo vehiculo = testDataBuilder.setPlaca(Constantes.PLACA_VEHICULO_CARRO_INICIO_CON_RESTRI)
+				.setFechaEntrada(LocalDateTime.parse("2018-12-09T07:00:00")).build();
 
+		try {
+			validarPlaca.ejecutar(vehiculo);
+		} catch (Exception e) {
+			assertEquals(Constantes.MENSAJE_RESTRICCION_DIAS_DOMINGO_LUNES, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void validarPlacaConRestriccionMartesTest() {
+		TestDataBuilder testDataBuilder = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO);
+		Vehiculo vehiculo = testDataBuilder.setPlaca(Constantes.PLACA_VEHICULO_CARRO_INICIO_CON_RESTRI)
+				.setFechaEntrada(LocalDateTime.parse("2018-12-11T07:00:00")).build();
+
+		try {
+			validarPlaca.ejecutar(vehiculo);
+		} catch (Exception e) {
+			assertEquals(Constantes.MENSAJE_RESTRICCION_DIAS_DOMINGO_LUNES, e.getMessage());
+		}
+	}
+
+
+	
 	@Test
 	public void validarPlacaSinRestriccionTest() {
 		TestDataBuilder testDataBuilder = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO);
