@@ -1,6 +1,8 @@
 package co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,5 @@ public interface ParqueaderoRepositorio extends JpaRepository<ParqueaderoEntity,
 	
 	public ParqueaderoEntity findByTipoVehiculoAndPlacaAndEstado(String tipoVehiculo, String placa,String estado);
 	
+	public List <ParqueaderoEntity> findByEstado(String estado);
 }

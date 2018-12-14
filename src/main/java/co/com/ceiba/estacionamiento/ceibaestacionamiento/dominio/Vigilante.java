@@ -17,7 +17,7 @@ public class Vigilante {
 	private List<IReglas> reglasDeIngreso = new ArrayList<>();
 	private List<IReglas> reglasDeSalida = new ArrayList<>();
 	ParqueaderoImpl parqueaderoImpl;
-
+	String mensaje = null;
 	public Vigilante(ParqueaderoImpl parqueaderoImpl) {
 		this.parqueaderoImpl = parqueaderoImpl;
 		reglasDeIngreso.add(new ValidarDisponibilidad(parqueaderoImpl));
@@ -27,17 +27,35 @@ public class Vigilante {
 
 	}
 
-	public void ingresarVehiculo(Vehiculo vehiculo) {
-		reglasDeIngreso.forEach(regla -> regla.ejecutar(vehiculo));
-		parqueaderoImpl.ingresarVehiculo(vehiculo);
+	public String ingresarVehiculo(Vehiculo vehiculo) {
+		try {
+			reglasDeIngreso.forEach(regla -> regla.ejecutar(vehiculo));
+			parqueaderoImpl.ingresarVehiculo(vehiculo);
+			mensaje = "El vehiculo con placa "+vehiculo.getPlaca()+" se ingreso correctamente a "+vehiculo.getFechaEntrada();
+		} catch (Exception e) {
+			mensaje = e.getMessage();
+		}
+		
+		return mensaje;
 	}
 
-	public void sacarVehiculo(String placa,String tipoVehiculo) {
-		Vehiculo vehiculo = parqueaderoImpl.buscarVehiculo(placa, tipoVehiculo, Constantes.ESTADO_ACTIVO );
-		vehiculo.setFechaSalida(LocalDateTime.now());
-		reglasDeSalida.forEach(regla -> regla.ejecutar(vehiculo));
-		parqueaderoImpl.sacarVehiculo(vehiculo);
+	public String sacarVehiculo(String placa,String tipoVehiculo) {
+		try {
+			Vehiculo vehiculo = parqueaderoImpl.buscarVehiculo(placa, tipoVehiculo, Constantes.ESTADO_ACTIVO );
+			vehiculo.setFechaSalida(LocalDateTime.now());
+			reglasDeSalida.forEach(regla -> regla.ejecutar(vehiculo));
+			parqueaderoImpl.sacarVehiculo(vehiculo);
+			mensaje = "El vehiculo con placa "+vehiculo.getPlaca()+" se retirado correctamente a "+vehiculo.getFechaSalida();
+		} catch (Exception e) {
+			mensaje = e.getMessage();
+		}
+		return mensaje;
 		
+	}
+	
+	public List<Vehiculo> consultarEstadoActualParqueadero(String estado){
+		List<Vehiculo> listaVehiculos = parqueaderoImpl.consultarEstadoActualParqueadero(Constantes.ESTADO_ACTIVO);
+		return listaVehiculos;
 	}
 
 }
