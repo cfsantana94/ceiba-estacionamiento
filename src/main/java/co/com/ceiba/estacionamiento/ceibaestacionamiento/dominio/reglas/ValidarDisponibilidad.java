@@ -1,5 +1,7 @@
 package co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.Vehiculo;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.constantes.Constantes;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.excepcion.Excepciones;
@@ -7,6 +9,7 @@ import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoImp
 
 public class ValidarDisponibilidad implements IReglas {
 
+	@Autowired
 	ParqueaderoImpl parqueaderoImpl;
 
 	public ValidarDisponibilidad(ParqueaderoImpl parqueaderoImpl) {

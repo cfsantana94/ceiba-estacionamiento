@@ -35,5 +35,7 @@ public class Constantes {
 	public static final String PLACA_VEHICULO_CARRO = "CCX568";
 	public static final String PLACA_VEHICULO_CARRO_INICIO_CON_RESTRI = "CCX568";
 	public static final String TIPO_VEHICULO_ERRADO = "AVION";
+	public static final int CAPACIDAD_LIBRE_CARRO = 10;
+	public static final int CAPACIDAD_LIBRE_MOTO = 6;
 
 }

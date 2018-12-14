@@ -26,7 +26,7 @@ import co.com.ceiba.estacionamiento.ceibaestacionamiento.utilidad.TestDataBuilde
 @RunWith(MockitoJUnitRunner.class)
 public class PruebasUnitarias {
 	
-	@InjectMocks
+	@Mock
 	ParqueaderoImpl parqueaderoImpl;
 	
 	@Mock
@@ -111,15 +111,50 @@ public class PruebasUnitarias {
 	}
 	
 	@Test
+	public void validarNoHayDisponibilidadCarroTest() {
+		Vehiculo vehiculo = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).build();
+
+		when(parqueaderoImpl.verificarCantidad(vehiculo.getTipoVehiculo(), Constantes.ESTADO_ACTIVO)).thenReturn((long) Constantes.CAPACIDAD_CARRO);
+		
+		try {			validarDisponibilidad.ejecutar(vehiculo);
+		} catch (Exception e) {
+			assertEquals(Constantes.MENSAJE_CUPO_CARRO_LLENO, e.getMessage());
+		}
+	}
+	
+	@Test
 	public void validarDisponibilidadCarroTest() {
 		Vehiculo vehiculo = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).build();
 
-		when(parqueaderoRepositorio.countByTipoVehiculoAndEstado(vehiculo.getTipoVehiculo(), Constantes.ESTADO_ACTIVO)).thenReturn((long) Constantes.CAPACIDAD_CARRO);
+		when(parqueaderoImpl.verificarCantidad(vehiculo.getTipoVehiculo(), Constantes.ESTADO_ACTIVO)).thenReturn((long) Constantes.CAPACIDAD_LIBRE_CARRO);
 		
-		try {
-			validarDisponibilidad.ejecutar(vehiculo);
+		try {			validarDisponibilidad.ejecutar(vehiculo);
 		} catch (Exception e) {
 			assertEquals(Constantes.MENSAJE_CUPO_CARRO_LLENO, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void validarNoHayDisponibilidadMotoest() {
+		Vehiculo vehiculo = new TestDataBuilder(Constantes.TIPO_VEHICULO_MOTO).build();
+
+		when(parqueaderoImpl.verificarCantidad(vehiculo.getTipoVehiculo(), Constantes.ESTADO_ACTIVO)).thenReturn((long) Constantes.CAPACIDAD_MOTO);
+		
+		try {			validarDisponibilidad.ejecutar(vehiculo);
+		} catch (Exception e) {
+			assertEquals(Constantes.MENSAJE_CUPO_MOTO_LLENO, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void validarDisponibilidadMotoTest() {
+		Vehiculo vehiculo = new TestDataBuilder(Constantes.TIPO_VEHICULO_MOTO).build();
+
+		when(parqueaderoImpl.verificarCantidad(vehiculo.getTipoVehiculo(), Constantes.ESTADO_ACTIVO)).thenReturn((long) Constantes.CAPACIDAD_LIBRE_MOTO);
+		
+		try {			validarDisponibilidad.ejecutar(vehiculo);
+		} catch (Exception e) {
+			assertEquals(Constantes.MENSAJE_CUPO_MOTO_LLENO, e.getMessage());
 		}
 	}
 
