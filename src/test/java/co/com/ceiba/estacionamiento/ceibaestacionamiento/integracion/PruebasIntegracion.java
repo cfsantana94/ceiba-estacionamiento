@@ -1,7 +1,11 @@
 package co.com.ceiba.estacionamiento.ceibaestacionamiento.integracion;
 
 
+import static org.junit.Assert.assertNotNull;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,14 +56,33 @@ public class PruebasIntegracion {
 	
 	
 	@Test
-	public void sacarVehiculo() {
-		Vehiculo  carro = new Vehiculo("DFD798",LocalDateTime.parse("2018-12-12T12:00:00"),null,0, Constantes.TIPO_VEHICULO_CARRO);
+	public void sacarVehiculoCarro() {
+		Vehiculo carro = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).setPlaca(Constantes.PLACA_VEHICULO_CARRO).setFechaEntrada(LocalDateTime.parse("2018-12-10T07:00:00")).build();
 		Vigilante vigilante=new Vigilante(parqueaderoImpl);
 		vigilante.ingresarVehiculo(carro);
 		vigilante.sacarVehiculo(carro.getPlaca(),carro.getTipoVehiculo());
 		Assert.assertNotNull(parqueaderoImpl.buscarVehiculo(carro.getPlaca(), carro.getTipoVehiculo(), Constantes.ESTADO_INACTIVO));
 	}
 	
+	@Test
+	public void sacarVehiculoMoto() {
+		Vehiculo moto = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).setPlaca("MF50D").setFechaEntrada(LocalDateTime.parse("2018-12-10T07:00:00")).build();
+		Vigilante vigilante=new Vigilante(parqueaderoImpl);
+		vigilante.ingresarVehiculo(moto);
+		vigilante.sacarVehiculo(moto.getPlaca(),moto.getTipoVehiculo());
+		Assert.assertNotNull(parqueaderoImpl.buscarVehiculo(moto.getPlaca(), moto.getTipoVehiculo(), Constantes.ESTADO_INACTIVO));
+	}
 	
+	@Test
+	public void consultarEstacionamientoTest() {
+		List <Vehiculo> estacionamiento = new ArrayList<>();
+		Vigilante vigilante=new Vigilante(parqueaderoImpl);
+		Vehiculo carro = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).setPlaca(Constantes.PLACA_VEHICULO_CARRO).build();
+		estacionamiento.add(carro);
+		
+		List<Vehiculo> totalEstacionados = vigilante.consultarEstadoActualParqueadero(Constantes.ESTADO_ACTIVO);
+		
+		assertNotNull(totalEstacionados);
+	}
 	
 }
