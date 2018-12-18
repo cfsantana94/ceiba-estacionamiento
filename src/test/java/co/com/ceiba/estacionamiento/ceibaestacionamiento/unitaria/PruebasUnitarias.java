@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.Calcular
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.ValidarDisponibilidad;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.ValidarPlaca;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.reglas.ValidarTipoVehiculo;
+import co.com.ceiba.estacionamiento.ceibaestacionamiento.entity.ParqueaderoBuilder;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoImpl;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoRepositorio;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.utilidad.TestDataBuilder;
@@ -32,6 +34,10 @@ public class PruebasUnitarias {
 
 	@Mock
 	ParqueaderoRepositorio parqueaderoRepositorio;
+	
+
+	@Mock
+	ParqueaderoBuilder parqueaderoBuilder;
 
 	@InjectMocks
 	ValidarTipoVehiculo validarTipoVehiculo;
@@ -329,4 +335,7 @@ public class PruebasUnitarias {
 		Assert.assertEquals(10500, vehiculo.getValorACobrar(), 0);
 
 	}
+	
+
+	
 }

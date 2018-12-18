@@ -15,6 +15,7 @@ import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.Vehiculo;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.Vigilante;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.dominio.constantes.Constantes;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoRepositorio;
+import co.com.ceiba.estacionamiento.ceibaestacionamiento.utilidad.TestDataBuilder;
 import co.com.ceiba.estacionamiento.ceibaestacionamiento.servicio.ParqueaderoImpl;
 
 
@@ -31,14 +32,23 @@ public class PruebasIntegracion {
 
 	
 	@Test
-	public void ingresarVehiculo() {
-		Vehiculo carro = new Vehiculo("CCX568",LocalDateTime.now(),null,0, Constantes.TIPO_VEHICULO_CARRO);
+	public void ingresarVehiculoCarro() {
+		Vehiculo carro = new TestDataBuilder(Constantes.TIPO_VEHICULO_CARRO).setPlaca(Constantes.PLACA_VEHICULO_CARRO).build();
 		Vigilante vigilante= new Vigilante (parqueaderoImpl);
 		vigilante.ingresarVehiculo(carro);
-		
 		Assert.assertNotNull(parqueaderoImpl.buscarVehiculo(carro.getPlaca(), carro.getTipoVehiculo(), Constantes.ESTADO_ACTIVO));
 		
 	}
+	
+	@Test
+	public void ingresarVehiculoMoto() {
+		Vehiculo moto = new TestDataBuilder(Constantes.TIPO_VEHICULO_MOTO).setPlaca("M30D").build();
+		Vigilante vigilante= new Vigilante (parqueaderoImpl);
+		vigilante.ingresarVehiculo(moto);
+		Assert.assertNotNull(parqueaderoImpl.buscarVehiculo(moto.getPlaca(), moto.getTipoVehiculo(), Constantes.ESTADO_ACTIVO));
+		
+	}
+	
 	
 	
 	@Test
